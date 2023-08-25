@@ -1,4 +1,4 @@
-import {Menu} from './menu.model';
+import {Page} from './page.model';
 
 export class Configuration {
 
@@ -26,5 +26,5 @@ export class Configuration {
 
     public metadata: { [key: string]: string };
 
-    public extraMenus: Menu[] = [];
+    public extraPages: Page[] = [];
 }

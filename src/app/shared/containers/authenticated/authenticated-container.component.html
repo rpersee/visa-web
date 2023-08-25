@@ -31,12 +31,12 @@
                     <span class="navigation-sidebar-item-name">Help</span>
                 </a>
             </li>
-            <li *ngFor="let menu of extraMenus$ | async">
-                <a [routerLink]="['/pages']" [queryParams]="{url: menu.iframeSrc}" class="navigation-sidebar-item visa-navigation-item">
+            <li *ngFor="let page of extraPages$ | async">
+                <a [routerLink]="['/pages']" [queryParams]="{url: page.iframeSrc}" class="navigation-sidebar-item visa-navigation-item">
                     <div class="navigation-sidebar-item-icon">
-                        <clr-icon [attr.shape]="menu.iconShape"></clr-icon>
+                        <clr-icon [attr.shape]="page.iconShape"></clr-icon>
                     </div>
-                    <span class="navigation-sidebar-item-name">{{ menu.title }}</span>
+                    <span class="navigation-sidebar-item-name">{{ page.title }}</span>
                 </a>
             </li>
         </ul>

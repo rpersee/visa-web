@@ -1,7 +1,7 @@
 import {JsonObject, JsonProperty} from 'json2typescript';
 
-@JsonObject('Menu')
-export class Menu {
+@JsonObject('Page')
+export class Page {
 
     @JsonProperty('title', String)
     private _title: string = undefined;
@@ -12,7 +12,7 @@ export class Menu {
     @JsonProperty('iframeSrc', String)
     private _iframeSrc: string = undefined;
 
-    public copy(data: Menu): Menu {
+    public copy(data: Page): Page {
         this.title = data.title;
         this.iconShape = data.iconShape;
         this.iframeSrc = data.iframeSrc;

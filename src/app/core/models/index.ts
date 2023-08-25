@@ -23,4 +23,4 @@ export * from './system-notification.model';
 export * from './documentation-section.model';
 export * from './quota.model';
 export * from './role.model';
-export * from './menu.model';
+export * from './page.model';

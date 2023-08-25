@@ -7,7 +7,7 @@ import {
     SystemNotification,
     User,
     ConfigService,
-    Menu
+    Page
 } from '@core';
 import {Store} from '@ngrx/store';
 import {Observable, Subscription, timer, Subject} from 'rxjs';
@@ -28,7 +28,7 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
     public systemNotifications: SystemNotification[] = [];
     public dismissedSystemNotifications: Array<number> = new Array<number>();
     private _timerSubscription: Subscription = null;
-    public extraMenus$: Observable<Menu[]>;
+    public extraPages$: Observable<Page[]>;
     private _destroy$: Subject<boolean> = new Subject<boolean>();
 
 
@@ -63,10 +63,10 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
                 this.filterSystemNotifications(systemNotifications);
             }));
 
-        this.extraMenus$ = this.configService.load()
+        this.extraPages$ = this.configService.load()
             .pipe(
                 takeUntil(this._destroy$),
-                map(config => config.extraMenus)
+                map(config => config.extraPages)
             );
     }
 
