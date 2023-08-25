@@ -6,11 +6,13 @@ import {
     selectLoggedInUser,
     SystemNotification,
     User,
+    ConfigService,
+    Menu
 } from '@core';
 import {Store} from '@ngrx/store';
-import {Observable, Subscription, timer} from 'rxjs';
+import {Observable, Subscription, timer, Subject} from 'rxjs';
 import {InvalidAccountDialogComponent} from '../../components';
-import {filter, take} from 'rxjs/operators';
+import {filter, take, takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -26,12 +28,15 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
     public systemNotifications: SystemNotification[] = [];
     public dismissedSystemNotifications: Array<number> = new Array<number>();
     private _timerSubscription: Subscription = null;
+    public extraMenus: Menu[] = [];
+    private _destroy$: Subject<boolean> = new Subject<boolean>();
 
 
     constructor(private authenticationService: AuthenticationService,
                 private notificationService: NotificationService,
                 private dialog: MatDialog,
-                private store: Store<ApplicationState>) {
+                private store: Store<ApplicationState>,
+                private configService: ConfigService) {
         this.user$ = store.select(selectLoggedInUser).pipe(filter(user => !!user), take(1));
     }
 
@@ -57,10 +62,18 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
                 this.cleanDismissedSystemNotifications(systemNotifications);
                 this.filterSystemNotifications(systemNotifications);
             }));
+
+        this.configService.load()
+            .pipe(takeUntil(this._destroy$))
+            .subscribe((config) => {
+                this.extraMenus = config.extraMenus;
+            });
     }
 
     public ngOnDestroy(): void {
         this._timerSubscription.unsubscribe();
+        this._destroy$.next(true);
+        this._destroy$.unsubscribe();
     }
 
     public handleLogout(): void {

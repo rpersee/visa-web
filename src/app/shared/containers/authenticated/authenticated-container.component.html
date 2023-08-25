@@ -31,6 +31,14 @@
                     <span class="navigation-sidebar-item-name">Help</span>
                 </a>
             </li>
+            <li *ngFor="let menu of extraMenus">
+                <a class="navigation-sidebar-item visa-navigation-item">
+                    <div class="navigation-sidebar-item-icon">
+                        <clr-icon [shape]="menu.iconShape"></clr-icon>
+                    </div>
+                    <span class="navigation-sidebar-item-name">{{ menu.title }}</span>
+                </a>
+            </li>
         </ul>
         <ul class="navigation-sidebar-items">
             <li *ngIf="(user$ | async)?.admin">

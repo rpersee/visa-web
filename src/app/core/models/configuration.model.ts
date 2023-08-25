@@ -1,3 +1,5 @@
+import {Menu} from './menu.model';
+
 export class Configuration {
 
     public version: string = undefined;
@@ -23,4 +25,6 @@ export class Configuration {
     };
 
     public metadata: { [key: string]: string };
+
+    public extraMenus: Menu[] = [];
 }
