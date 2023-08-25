@@ -12,7 +12,7 @@ import {
 import {Store} from '@ngrx/store';
 import {Observable, Subscription, timer, Subject} from 'rxjs';
 import {InvalidAccountDialogComponent} from '../../components';
-import {filter, take, takeUntil} from 'rxjs/operators';
+import {filter, take, takeUntil, map, tap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -28,7 +28,7 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
     public systemNotifications: SystemNotification[] = [];
     public dismissedSystemNotifications: Array<number> = new Array<number>();
     private _timerSubscription: Subscription = null;
-    public extraMenus: Menu[] = [];
+    public extraMenus$: Observable<Menu[]>;
     private _destroy$: Subject<boolean> = new Subject<boolean>();
 
 
@@ -63,11 +63,11 @@ export class AuthenticatedContainerComponent implements OnInit, OnDestroy {
                 this.filterSystemNotifications(systemNotifications);
             }));
 
-        this.configService.load()
-            .pipe(takeUntil(this._destroy$))
-            .subscribe((config) => {
-                this.extraMenus = config.extraMenus;
-            });
+        this.extraMenus$ = this.configService.load()
+            .pipe(
+                takeUntil(this._destroy$),
+                map(config => config.extraMenus)
+            );
     }
 
     public ngOnDestroy(): void {
