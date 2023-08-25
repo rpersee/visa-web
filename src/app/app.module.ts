@@ -44,6 +44,11 @@ registerLocaleData(localeGB);
                 loadChildren: () => import(`./documentation/documentation.module`).then((m) => m.DocumentationModule),
             },
             {
+                canActivate: [authenticationGuard],
+                path: 'pages',
+                loadChildren: () => import(`./pages/pages.module`).then((m) => m.PagesModule),
+            },
+            {
                 path: '**', component: NotfoundComponent,
             },
         ]),
