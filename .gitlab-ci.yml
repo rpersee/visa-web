@@ -30,6 +30,16 @@ build:
         SANITIZED=$(echo "${NOSLASH}" | tr -cd '[:alnum:]-')
         set -- "$@" "--destination" "${IMAGE}:branch-${SANITIZED}"
       fi
+
+      if [ -n "${http_proxy}" ]; then
+        set -- "$@" "--build-arg" "http_proxy=${http_proxy}"
+      fi
+      if [ -n "${https_proxy}" ]; then
+        set -- "$@" "--build-arg" "https_proxy=${https_proxy}"
+      fi
+      if [ -n "${no_proxy}" ]; then
+        set -- "$@" "--build-arg" "no_proxy=${no_proxy}"
+      fi
       
       /kaniko/executor "$@" \
         --context "${CI_PROJECT_DIR}" \
