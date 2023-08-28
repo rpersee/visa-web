@@ -8,9 +8,9 @@ import {ActivatedRoute} from '@angular/router';
     `,
     styles: [
         `
-            iframe {
+            :host {
                 display: flex;
-                min-height: 100vh;
+                height: 100vh;
             }
         `
     ]
