@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 
 @Component({
     template: `
-        <iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe>
+        <iframe [height]="height" [width]="width" frameBorder="0" [src]="urlSafe"></iframe>
     `,
     styles: [
         `
@@ -18,6 +18,8 @@ import {ActivatedRoute} from '@angular/router';
 export class PagesComponent {
     url: string;
     urlSafe: SafeResourceUrl;
+    height: string;
+    width: string;
 
     constructor(public sanitizer: DomSanitizer, private route: ActivatedRoute) {}
 
@@ -25,6 +27,8 @@ export class PagesComponent {
         this.route.queryParams.subscribe(params => {
             this.url = params['url'];
             this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+            this.height = params['height'];
+            this.width = params['width'];
         });
     }
 }

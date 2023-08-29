@@ -12,10 +12,18 @@ export class Page {
     @JsonProperty('iframeSrc', String)
     private _iframeSrc: string = undefined;
 
+    @JsonProperty('iframeHeight', String)
+    private _iframeHeight: string = undefined;
+
+    @JsonProperty('iframeWidth', String)
+    private _iframeWidth: string = undefined;
+
     public copy(data: Page): Page {
         this.title = data.title;
         this.iconShape = data.iconShape;
         this.iframeSrc = data.iframeSrc;
+        this.iframeHeight = data.iframeHeight;
+        this.iframeWidth = data.iframeWidth;
         return this;
     }
 
@@ -41,5 +49,21 @@ export class Page {
 
     public set iframeSrc(value: string) {
         this._iframeSrc = value;
+    }
+
+    public get iframeHeight(): string {
+        return this._iframeHeight;
+    }
+
+    public set iframeHeight(value: string) {
+        this._iframeHeight = value;
+    }
+
+    public get iframeWidth(): string {
+        return this._iframeWidth;
+    }
+
+    public set iframeWidth(value: string) {
+        this._iframeWidth = value;
     }
 }

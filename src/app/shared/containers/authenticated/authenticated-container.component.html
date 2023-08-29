@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li *ngFor="let page of extraPages$ | async">
-                <a [routerLink]="['/pages']" [queryParams]="{url: page.iframeSrc}" class="navigation-sidebar-item visa-navigation-item">
+                <a [routerLink]="['/pages']" [queryParams]="{url: page.iframeSrc, height: page.iframeHeight, width: page.iframeWidth}" class="navigation-sidebar-item visa-navigation-item">
                     <div class="navigation-sidebar-item-icon">
                         <clr-icon [attr.shape]="page.iconShape"></clr-icon>
                     </div>
