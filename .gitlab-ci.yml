@@ -19,28 +19,23 @@ build:
     #   * Tag: v1.0.0/beta2 -> v1.0.0-beta2
     - |
       set -- "--destination" "${IMAGE}:${CI_COMMIT_SHORT_SHA}"
+
       if [ "${CI_COMMIT_REF_NAME}" = "${CI_DEFAULT_BRANCH}" ]; then
         set -- "$@" "--destination" "${IMAGE}:latest"
-      elif [ -n "${CI_COMMIT_TAG}" ]; then
-        NOSLASH=$(echo "${CI_COMMIT_TAG}" | tr -s / -)
-        SANITIZED=$(echo "${NOSLASH}" | tr -cd '[:alnum:]-')
-        set -- "$@" "--destination" "${IMAGE}:${SANITIZED}"
       else
-        NOSLASH=$(echo "${CI_COMMIT_REF_NAME}" | tr -s / -)
-        SANITIZED=$(echo "${NOSLASH}" | tr -cd '[:alnum:]-')
-        set -- "$@" "--destination" "${IMAGE}:branch-${SANITIZED}"
+        CI_COMMIT_REF="${CI_COMMIT_TAG:-branch-$CI_COMMIT_REF_NAME}"
+        NO_SLASH=$(echo "${CI_COMMIT_REF}" | tr -s / -)
+        SANITIZED=$(echo "${NO_SLASH}" | tr -cd '[:alnum:]_.-')
+        set -- "$@" "--destination" "${IMAGE}:${SANITIZED}"
       fi
 
-      if [ -n "${http_proxy}" ]; then
-        set -- "$@" "--build-arg" "http_proxy=${http_proxy}"
-      fi
-      if [ -n "${https_proxy}" ]; then
-        set -- "$@" "--build-arg" "https_proxy=${https_proxy}"
-      fi
-      if [ -n "${no_proxy}" ]; then
-        set -- "$@" "--build-arg" "no_proxy=${no_proxy}"
-      fi
-      
+      for var in http_proxy https_proxy no_proxy; do
+        eval "value=\$$var"
+        if [ -n "$value" ]; then
+          set -- "$@" "--build-arg" "${var}=${value}"
+        fi
+      done
+
       /kaniko/executor "$@" \
         --context "${CI_PROJECT_DIR}" \
         --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
